@@ -8,7 +8,7 @@ async function getArticle(id) {
 
 
 function uniteFactory(article) {
-    
+
     let img = document.createElement('img');
     img.src = 'http://localhost:3000/images/logo.png';
     img.alt = article.altTxt;
@@ -36,22 +36,19 @@ async function init() {
     description.textContent = article.description;
     let price = document.getElementById('price');
     price.textContent = article.price;
-    
 
-    // document.getElementById("colors")[0].textContent = article.colors;
-    // let option = document.getElementById('option');
-    // let option1 = document.createElement('option');
-    // option1.value = article.colors[0];
-    // let option2 = document.createElement('option');
-    // option2.value = article.colors[1];
-    // let option3 = document.createElement('option');
-    // option3.value = article.colors[2];
-    // option.appendChild(option1);
-    // option.appendChild(option2);
-    // option.appendChild(option3);
 
-   
+    article.colors.forEach(color => {
 
+        let option1 = document.createElement('option');
+        option1.value = color;
+        option1.textContent = color;
+
+        document.getElementById('colors').appendChild(option1)
+
+
+    });
+  
 };
 
 
