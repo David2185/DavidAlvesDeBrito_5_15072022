@@ -6,28 +6,15 @@ async function getArticle(id) {
 
 }
 
-
-function uniteFactory(article) {
-
-    let img = document.createElement('img');
-    img.src = 'http://localhost:3000/images/logo.png';
-    img.alt = article.altTxt;
-
-    let itemImage = document.getElementsByClassName('item__img');
-    img.textContent = product.imageUrl;
-    itemImage.appendChild(img);
-
-    return img;
-
-}
-
-
+// création des éléments du DOM et leur contenu pour la page produit
 async function init() {
 
-    let params = new URLSearchParams(document.location.search);
+    //récupéaration de l'id produit 
+    let params = new URLSearchParams(document.location.search); 
 
+    // création des éléments du DOM nécessaires
     let id = params.get("id");
-    console.log(id);
+    // console.log(id);
     let article = await getArticle(id);
     console.log(article);
     let title = document.getElementById('title');
@@ -35,9 +22,7 @@ async function init() {
     let description = document.getElementById('description');
     description.textContent = article.description;
     let price = document.getElementById('price');
-    price.textContent = article.price;
-
-
+    price.textContent = article.price + ' ';
     article.colors.forEach(color => {
 
         let option1 = document.createElement('option');
@@ -48,7 +33,12 @@ async function init() {
 
 
     });
-  
+
+    let img = document.createElement('img');
+    img.src = article.imageUrl;
+    img.alt = article.altTxt;
+    document.querySelector('.item__img').appendChild(img);
+
 };
 
 
