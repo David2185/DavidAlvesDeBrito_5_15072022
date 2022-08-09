@@ -10,7 +10,7 @@ async function getArticle(id) {
 async function init() {
 
     //récupéaration de l'id produit 
-    let params = new URLSearchParams(document.location.search); 
+    let params = new URLSearchParams(document.location.search);
 
     // création des éléments du DOM nécessaires
     let id = params.get("id");
@@ -41,5 +41,37 @@ async function init() {
 
 };
 
+// gestion du panier
 
+let quantityPicked = document.querySelector("#quantity");
+let colorPicked = document. querySelector("#colors");
+
+
+
+
+
+function addToCart(article) {
+
+    //fonction qui ajoute un article dans un panier via le localStorage en tenant compte de l'id, de la couleur et de la quantité
+    let btnSendToCart = document.getElementById('addToCart');
+    btnSendToCart.addEventListener('click', function () {
+            
+            let cart = localStorage.getItem('cart');
+            cart = JSON.parse(cart);
+            if (cart == null) {
+                cart = [];
+            }
+            cart.push({
+                id: article._id,
+                color: colorPicked.value,
+                quantity: quantityPicked.value
+            });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            console.log(cart);
+        });
+}
+
+addToCart();
 init();
+
+
