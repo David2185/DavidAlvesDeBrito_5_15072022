@@ -6,6 +6,9 @@ async function getArticle(id) {
 
 }
 
+addToCart();
+
+
 // création des éléments du DOM et leur contenu pour la page produit
 async function init() {
 
@@ -44,15 +47,15 @@ async function init() {
 // gestion du panier
 
 let quantityPicked = document.querySelector("#quantity");
-let colorPicked = document. querySelector("#colors");
+let colorPicked = document.querySelector("#colors");
+let idProduct = (new URL(window.location).searchParams.get("id"));
 
 
 
 
+function addToCart() {
 
-function addToCart(article) {
-
-    //fonction qui ajoute un article dans un panier via le localStorage en tenant compte de l'id, de la couleur et de la quantité
+    //fonction qui ajoute un article dans un panier via le localStorage en tenant compte de l'id, de la couleur et de la quantité choisie
     let btnSendToCart = document.getElementById('addToCart');
     btnSendToCart.addEventListener('click', function () {
             
@@ -62,7 +65,7 @@ function addToCart(article) {
                 cart = [];
             }
             cart.push({
-                id: article._id,
+                id: idProduct,
                 color: colorPicked.value,
                 quantity: quantityPicked.value
             });
@@ -71,7 +74,69 @@ function addToCart(article) {
         });
 }
 
-addToCart();
+//création de la classe cart 
+class cart {
+    constructor () {
+        this.items = JSON.parse(localStorage.getItem(key,'cart')) ?? []
+    }
+
+    save() {
+        localStorage.setItem('cart', JSON.stringify(this.items))
+}
+
+    add(idProduct, color, quantity) {
+        
+        const cartItem = this.items.find(item => item.id === idProduct && item.color === color)
+        if (cartItem) {
+            cartItem.quantity += quantity
+        } else {
+            this.items.push({
+                id: idProduct,
+                color: color,
+                quantity: quantity
+            })
+        }
+
+        this.save()
+    }
+
+    delete(idProduct, colorPicked) {
+        this.items = this.items.filter(item => item.id !== idProduct && item.color === colorPicked)
+
+        this.save()
+    }
+
+    update(idProduct, colorPicked, quantity) {
+        const cartItem = this.items.find(item => item.id === idProduct && item.color === colorPicked)
+        if (cartItem) {
+            cartItem.quantity = quantity
+        }
+        this.save()
+    }
+
+    totalQuantity(idProduct, colorPicked) {
+        const cartItem = this.items.find(item => item.id === idProduct && item.color === colorPicked)
+        if (cartItem) {
+            return cartItem.quantity
+        }
+        return 0
+    }
+
+    totalPrice(idProduct, colorPicked) {
+        const cartItem = this.items.find(item => item.id === idProduct && item.color === colorPicked)
+        if (cartItem) {
+            return cartItem.quantity * idProduct.price
+        }
+        return 0
+    }
+
+
+
+}
+
+
+
+
 init();
 
 
