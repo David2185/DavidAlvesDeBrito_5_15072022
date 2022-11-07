@@ -59,81 +59,10 @@ function addToCart() {
     let btnSendToCart = document.getElementById('addToCart');
     btnSendToCart.addEventListener('click', function () {
             
-            let cart = localStorage.getItem('cart');
-            cart = JSON.parse(cart);
-            if (cart == null) {
-                cart = [];
-            }
-            cart.push({
-                id: idProduct,
-                color: colorPicked.value,
-                quantity: quantityPicked.value
-            });
-            localStorage.setItem('cart', JSON.stringify(cart));
-            console.log(cart);
+            let cart = new Cart();
+            cart.add(idProduct, colorPicked.value, + quantityPicked.value);
         });
 }
-
-//création de la classe cart 
-class cart {
-    constructor () {
-        this.items = JSON.parse(localStorage.getItem(key,'cart')) ?? []
-    }
-
-    save() {
-        localStorage.setItem('cart', JSON.stringify(this.items))
-}
-
-    add(idProduct, color, quantity) {
-        
-        const cartItem = this.items.find(item => item.id === idProduct && item.color === color)
-        if (cartItem) {
-            cartItem.quantity += quantity
-        } else {
-            this.items.push({
-                id: idProduct,
-                color: color,
-                quantity: quantity
-            })
-        }
-
-        this.save()
-    }
-
-    delete(idProduct, colorPicked) {
-        this.items = this.items.filter(item => item.id !== idProduct && item.color === colorPicked)
-
-        this.save()
-    }
-
-    update(idProduct, colorPicked, quantity) {
-        const cartItem = this.items.find(item => item.id === idProduct && item.color === colorPicked)
-        if (cartItem) {
-            cartItem.quantity = quantity
-        }
-        this.save()
-    }
-
-    totalQuantity(idProduct, colorPicked) {
-        const cartItem = this.items.find(item => item.id === idProduct && item.color === colorPicked)
-        if (cartItem) {
-            return cartItem.quantity
-        }
-        return 0
-    }
-
-    totalPrice(idProduct, colorPicked) {
-        const cartItem = this.items.find(item => item.id === idProduct && item.color === colorPicked)
-        if (cartItem) {
-            return cartItem.quantity * idProduct.price
-        }
-        return 0
-    }
-
-
-
-}
-
 
 
 

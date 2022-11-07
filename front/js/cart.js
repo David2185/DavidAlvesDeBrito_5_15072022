@@ -1,97 +1,97 @@
-
 async function init() {
-    const cart = new cart()
-    const products = await getProducts();
+    const cart = new Cart();
+    document.getElementById('totalQuantity').textContent = cart.totalQuantity();
+    // console.log(await cart.getAllItems());
+    // console.log(await cart.totalPrice());
+    document.getElementById('totalPrice').textContent = await cart.totalPrice();
 
-    // création des éléments du DOM nécessaires
-    let idProduct = params.get("id");
-    //création d'une balise article 
-    let cartItem = document.createElement('article');
-    cartItem.classList.add('cart__item');
-    cartItem.setAttribute('data-id', idProduct);
-    cartItem.setAttribute('data-color', colorPicked.value);
-    //création d'une balise div
-    let cartItemImg = document.createElement('div');
-    cartItemImg.classList.add('cart__item__img');
-    //création d'une balise img
-    let img = document.createElement('img');
-    img.src = article.imageUrl;
-    img.alt = article.altTxt;
-    cartItemImg.appendChild(img);
-    cartItem.appendChild(cartItemImg);
-    //création d'une balise div
-    let cartItemContent = document.createElement('div');
-    cartItemContent.classList.add('cart__item__content');
-    //création d'une balise div
-    let cartItemContentDescription = document.createElement('div');
-    cartItemContentDescription.classList.add('cart__item__content__description');
-    //création d'une balise h2
-    let title = document.createElement('h2');
-    title.textContent = article.name;
-    cartItemContentDescription.appendChild(title);
-    //création d'une balise p
-    let color = document.createElement('p');
-    color.textContent = colorPicked.value;
-    cartItemContentDescription.appendChild(color);
-    //création d'une balise p
-    let price = document.createElement('p');
-    price.textContent = article.price + ' €';
-    cartItemContentDescription.appendChild(price);
-    cartItemContent.appendChild(cartItemContentDescription);
-    //création d'une balise div
-    let cartItemContentSettings = document.createElement('div');
-    cartItemContentSettings.classList.add('cart__item__content__settings');
-    //création d'une balise div
-    let cartItemContentSettingsQuantity = document.createElement('div');
-    cartItemContentSettingsQuantity.classList.add('cart__item__content__settings__quantity');   
-    //création d'une balise p
-    let quantity = document.createElement('p');
-    quantity.textContent = 'Qté : ';
-    cartItemContentSettingsQuantity.appendChild(quantity);
-    //création d'une balise input
-    let itemQuantity = document.createElement('input');
-    itemQuantity.type = 'number';
-    itemQuantity.classList.add('itemQuantity');
-    itemQuantity.name = 'itemQuantity';
-    itemQuantity.min = '1';
-    itemQuantity.max = '100';
-    itemQuantity.value = '42';
-    cartItemContentSettingsQuantity.appendChild(itemQuantity);
-    cartItemContentSettings.appendChild(cartItemContentSettingsQuantity);
-    //création d'une balise div
-    let cartItemContentSettingsDelete = document.createElement('div');
-    cartItemContentSettingsDelete.classList.add('cart__item__content__settings__delete');
-    //création d'une balise p
-    let deleteItem = document.createElement('p');
-    deleteItem.classList.add('deleteItem');
-    deleteItem.textContent = 'Supprimer';
-    cartItemContentSettingsDelete.appendChild(deleteItem);
-    cartItemContentSettings.appendChild(cartItemContentSettingsDelete);
-    cartItemContent.appendChild(cartItemContentSettings);
-    cartItem.appendChild(cartItemContent);
-    cart.appendChild(cartItem);
-    //création d'une balise div
-    let cartTotal = document.createElement('div');
-    cartTotal.classList.add('cart__total');
-    //création d'une balise p
-    let total = document.createElement('p');
-    total.textContent = 'Total : ' + article.price + ' €';
-    cartTotal.appendChild(total);
-    cart.appendChild(cartTotal);
-    //création d'une balise div
-    let cartButton = document.createElement('div');
-    cartButton.classList.add('cart__button');
-    //création d'une balise button
-    let button = document.createElement('button');
-    button.textContent = 'Commander';
-    cartButton.appendChild(button);
-    cart.appendChild(cartButton);
+
+    let articles = await cart.getAllItems();
+    // console.log(articles);
+    const items = document.getElementById('cart__items');
+    articles.forEach(function (article) {
+        const e = cartItemFactory(article);
+        items.appendChild(e);
+
+    })
 
 }
 
-
-
-
-
-
 init();
+
+
+function cartItemFactory(cartItem) {
+
+    //création des éléments du DOM et attribution du contenu pour chaque balise.
+
+    let articleItem = document.createElement('article');
+    articleItem.textContent = cartItem.name;
+    articleItem.classList.add('cart_item');
+    articleItem.dataset.id = cartItem.id;
+    articleItem.dataset.color = cartItem.color;
+
+    let cartImg = document.createElement('div');
+    cartImg.classList.add('cart__item__img');
+
+    let img = document.createElement('img');
+    img.src = cartItem.imageUrl;
+
+    let itemContent = document.createElement('div');
+    itemContent.classList.add('cart_item_content');
+
+    let itemContentDescription = document.createElement('div');
+    itemContentDescription.classList.add('cart_item_content_description');
+
+    let h2 = document.createElement('h2');
+
+    let paraColor = document.createElement('p');
+    paraColor.textContent = cartItem.color;
+
+    let secondpara = document.createElement('p');
+    secondpara.textContent = cartItem.price + ' €';
+
+    let contentSettings = document.createElement('div');
+    contentSettings.classList.add('cart__item__content__settings');
+
+    let itemSettingsQuantity = document.createElement('div');
+    itemSettingsQuantity.classList.add('cart__item__content__settings__quantity');
+
+    let paraQuantity = document.createElement('p');
+    paraQuantity.textContent = "Qté : ";
+
+    let input = document.createElement('input');
+    input.classList.add('itemQuantity');
+    input.setAttribute('type', 'number');
+    input.setAttribute('name', 'itemQuantity');
+    input.setAttribute('min', '1');
+    input.setAttribute('max', '100');
+    input.setAttribute('value', cartItem.quantity);
+
+    let itemDelete = document.createElement('div');
+    itemDelete.classList.add('cart__item__content__settings__delete');
+
+    let deletePara = document.createElement('p');
+    deletePara.classList.add('deleteItem');
+    deletePara.textContent = "Supprimer";
+
+    // mise en place des balises crées dans le DOM.
+
+    itemDelete.appendChild(deletePara);
+    itemSettingsQuantity.appendChild(paraQuantity);
+    itemSettingsQuantity.appendChild(input);
+    contentSettings.appendChild(itemSettingsQuantity);
+    contentSettings.appendChild(itemDelete);
+    itemContentDescription.appendChild(h2);
+    itemContentDescription.appendChild(paraColor);
+    itemContentDescription.appendChild(secondpara);
+    itemContent.appendChild(itemContentDescription);
+    itemContent.appendChild(contentSettings);
+    cartImg.appendChild(img);
+    articleItem.appendChild(cartImg);
+    articleItem.appendChild(itemContent);
+
+    return articleItem;
+
+}
+
+cartItemFactory(init());
