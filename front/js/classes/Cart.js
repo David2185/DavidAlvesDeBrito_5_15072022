@@ -16,7 +16,7 @@ class Cart {
         
         const cartItem = this.items.find(item => item.id === idProduct && item.color === color)
         if (cartItem) {
-            cartItem.quantity += quantity
+            cartItem.quantity += quantity;
         } else {
             this.items.push({
                 id: idProduct,
@@ -36,16 +36,10 @@ class Cart {
 
     update(idProduct, colorPicked, quantity) {
          
-        const cartItem = this.items.find(item => item.id === idProduct && item.color === colorPicked && item.quantity === quantity);
+        const cartItem = this.items.find(item => item.id === idProduct && item.color === colorPicked);
         if (cartItem) {
-            cartItem.quantity += quantity
-        } else {
-            this.items.push({
-                id: idProduct,
-                color: color,
-                quantity: quantity
-            })
-        }
+            cartItem.quantity = quantity;
+        } 
 
         this.save()
     }
