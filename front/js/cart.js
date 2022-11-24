@@ -111,105 +111,110 @@ init();
 
 
 
+
+//Création des Regex
+let form = document.querySelector(".cart__order__form");
+
+
+let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$');
+let charRegExp = new RegExp("^[a-zA-Z ,.'-]+$");
+let addressRegExp = new RegExp("^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+");
+
+//validation du prénom
+const validFirstName = function (inputFirstName) {
+    let firstNameErrorMsg = inputFirstName.nextElementSibling;
+
+    if (charRegExp.test(inputFirstName.value)) {
+        firstNameErrorMsg.innerHTML = '';
+
+    } else {
+        firstNameErrorMsg.innerHTML = 'Vous devez renseigner un prénom valide';
+    }
+};
+
+//validation du nom
+
+const validLastName = function (inputLastName) {
+    let lastNameErrorMsg = inputLastName.nextElementSibling;
+
+    if (charRegExp.test(inputLastName.value)) {
+        lastNameErrorMsg.innerHTML = '';
+    } else {
+        lastNameErrorMsg.innerHTML = 'Vous devez renseigner un nom valide';
+    }
+};
+
+//validation de l'adresse
+
+const validAddress = function (inputAddress) {
+    let addressErrorMsg = inputAddress.nextElementSibling;
+
+    if (addressRegExp.test(inputAddress.value)) {
+        addressErrorMsg.innerHTML = '';
+    } else {
+        addressErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+    }
+};
+
+//validation de la ville
+const validCity = function (inputCity) {
+    let cityErrorMsg = inputCity.nextElementSibling;
+
+    if (charRegExp.test(inputCity.value)) {
+        cityErrorMsg.innerHTML = '';
+    } else {
+        cityErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+    }
+};
+
+//validation de l'email
+const validEmail = function (inputEmail) {
+    let emailErrorMsg = inputEmail.nextElementSibling;
+
+    if (emailRegExp.test(inputEmail.value)) {
+        emailErrorMsg.innerHTML = '';
+    } else {
+        emailErrorMsg.innerHTML = 'Veuillez renseigner votre email.';
+    }
+};
+
+
 //Implémentation des règles de remplissage du formulaire
-function getForm() {
-    // Ajout des Regex
-    let form = document.querySelector(".cart__order__form");
+function fieldManager() {
 
-
-    let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$');
-    let charRegExp = new RegExp("^[a-zA-Z ,.'-]+$");
-    let addressRegExp = new RegExp("^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+");
-
-    // Ecoute de la modification des différents champs
 
     form.firstName.addEventListener('change', function () {
         validFirstName(this);
     });
 
-    //validation du prénom
-    const validFirstName = function (inputFirstName) {
-        let firstNameErrorMsg = inputFirstName.nextElementSibling;
-
-        if (charRegExp.test(inputFirstName.value)) {
-            firstNameErrorMsg.innerHTML = '';
-
-        } else {
-            firstNameErrorMsg.innerHTML = 'Vous devez renseigner un prénom valide';
-        }
-    };
-
     form.lastName.addEventListener('change', function () {
         validLastName(this);
     });
 
-    //validation du nom
-
-    const validLastName = function (inputLastName) {
-        let lastNameErrorMsg = inputLastName.nextElementSibling;
-
-        if (charRegExp.test(inputLastName.value)) {
-            lastNameErrorMsg.innerHTML = '';
-        } else {
-            lastNameErrorMsg.innerHTML = 'Vous devez renseigner un nom valide';
-        }
-    };
 
     form.address.addEventListener('change', function () {
         validAddress(this);
     });
 
-    //validation de l'adresse
-
-    const validAddress = function (inputAddress) {
-        let addressErrorMsg = inputAddress.nextElementSibling;
-
-        if (addressRegExp.test(inputAddress.value)) {
-            addressErrorMsg.innerHTML = '';
-        } else {
-            addressErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
-        }
-    };
 
     form.city.addEventListener('change', function () {
         validCity(this);
     });
 
-    //validation de la ville
-    const validCity = function (inputCity) {
-        let cityErrorMsg = inputCity.nextElementSibling;
-
-        if (charRegExp.test(inputCity.value)) {
-            cityErrorMsg.innerHTML = '';
-        } else {
-            cityErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
-        }
-    };
-
 
     form.email.addEventListener('change', function () {
         validEmail(this);
     });
-
-    //validation de l'email
-    const validEmail = function (inputEmail) {
-        let emailErrorMsg = inputEmail.nextElementSibling;
-
-        if (emailRegExp.test(inputEmail.value)) {
-            emailErrorMsg.innerHTML = '';
-        } else {
-            emailErrorMsg.innerHTML = 'Veuillez renseigner votre email.';
-        }
-    };
 }
-getForm();
+fieldManager();
+
 
 //Envoi des informations client au localstorage
 function postForm() {
-    const btn_commander = document.getElementById("order");
+    const btn_command = document.getElementById("order");
 
     //Evenenements de type listener sur le panier
-    btn_commander.addEventListener("click", () => {
+    btn_command.addEventListener("click", () => {
 
         produitLocalStorage = JSON.parse(localStorage.getItem('cart')) ?? [];
 
@@ -224,6 +229,10 @@ function postForm() {
         let idProducts = [];
         for (let i = 0; i < produitLocalStorage.length; i++) {
             idProducts.push(produitLocalStorage[i].idProduit);
+            // for (let j = 0; j < totalQuantity.length; j++) {
+            //     console.log(totalQuantity);
+            // };
+            console.log(idProducts);
         }
         console.log(idProducts);
 
@@ -252,10 +261,24 @@ function postForm() {
             .then((data) => {
                 console.log(data);
                 localStorage.clear();
-                localStorage.setItem("orderId", data.orderId);
 
                 document.location.href = "confirmation.html";
             })
     })
 }
-postForm();
+postForm() ;
+
+
+function submitForm (e){
+    e.preventDefault();
+    if (cart.length === 0){
+      alert('Vous ne pouvez passer une commande avec un panier vide')
+    }else{
+      if(checkInput()){
+        postApi(requestBody())
+      };
+    }
+  };
+  //Lorsque l'utilisateur clique sur le bouton commander, on appelle la fonction submitForm
+  const submitBtn = document.getElementById('order')
+  submitBtn.addEventListener("click", (e) => submitForm(e))
