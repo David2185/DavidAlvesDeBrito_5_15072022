@@ -254,9 +254,7 @@ function checkForm() {
 
 
 checkForm();
-
-
-    
+   
 
 //Envoi des informations client au localstorage et création d'un order id qui s'affichera dans la page confirmation de commande
 
@@ -312,11 +310,51 @@ function postForm() {
             .then((data) => {
                 console.log(data);
                 localStorage.clear();
-                window.location.href = `./confirmation.html?orderId=${order._id}`;
+
+                //une fois la commande validée : redirection vers la page confirmation de commande pour afficher l'id de commande
+                window.location.href = "confirmation.html?id=" + data.orderId;
             })
+            .catch((error) => {
+                console.log(error);
+            });
+    });
+}
+
+// postForm(sendForm());
+
+
+
+// création et affichage d'un id pour la page confirmation de commande
+
+function orderId() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderId = urlParams.get('orderId');
+    const orderIdElement = document.getElementById('orderId');
+    orderIdElement.innerHTML = orderId;
+}
+orderId();
+
+
+
+// envoi du formulaire de contact au serveur et lalert si panier vide sur le bouton commander.
+
+function sendForm() {
+    const btn_command = document.getElementById("order");
+    
+    btn_command.addEventListener("click", () => {
+        if (produitLocalStorage.length == 0) {
+            alert("Votre panier est vide");
+        } else {
+            postForm();
+        }
     })
 }
-postForm();
+
+
+sendForm(postForm());
+
+
+
 
 
 // function submitForm (e){
