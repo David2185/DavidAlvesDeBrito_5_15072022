@@ -319,10 +319,7 @@ function postForm() {
             });
     });
 }
-
-// postForm(sendForm());
-
-
+postForm();
 
 // création et affichage d'un id pour la page confirmation de commande
 
@@ -369,4 +366,11 @@ sendForm(postForm());
 //   };
 //   //Lorsque l'utilisateur clique sur le bouton commander, on appelle la fonction submitForm
 //   const submitBtn = document.getElementById('order')
-//   submitBtn.addEventListener("click", (e) => submitForm(e))
+//   submitBtn.addEventListener("click", (e) => submitForm(e))window.addEventListener("load", () => {
+//     //On récupère le panier dans le localStorage
+//     cart = JSON.parse(localStorage.getItem('cart')) ?? [];
+//     //On affiche le nombre d'articles dans le panier
+//     displayCartLength();
+//     //On affiche le panier
+//     displayCart();
+//     //On affiche le prix total du panier
