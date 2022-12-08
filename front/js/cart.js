@@ -258,8 +258,6 @@ checkForm();
 
 //Envoi des informations client au localstorage et création d'un order id qui s'affichera dans la page confirmation de commande
 
-
-
 function postForm() {
     const btn_command = document.getElementById("order");
 
@@ -310,9 +308,8 @@ function postForm() {
             .then((data) => {
                 console.log(data);
                 localStorage.clear();
-
                 //une fois la commande validée : redirection vers la page confirmation de commande pour afficher l'id de commande
-                window.location.href = "confirmation.html?id=" + data.orderId;
+                window.location.href = "confirmation.html?id=" + data.idProducts;
             })
             .catch((error) => {
                 console.log(error);
@@ -323,17 +320,8 @@ postForm();
 
 // création et affichage d'un id pour la page confirmation de commande
 
-function orderId() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const orderId = urlParams.get('orderId');
-    const orderIdElement = document.getElementById('orderId');
-    orderIdElement.innerHTML = orderId;
-}
-orderId();
 
-
-
-// envoi du formulaire de contact au serveur et lalert si panier vide sur le bouton commander.
+// envoi du formulaire de contact au serveur et l'alert si panier vide sur le bouton commander.
 
 function sendForm() {
     const btn_command = document.getElementById("order");
@@ -345,12 +333,12 @@ function sendForm() {
             postForm();
         }
     })
+    
+
 }
 
 
-sendForm(postForm());
-
-
+sendForm();
 
 
 
@@ -369,8 +357,3 @@ sendForm(postForm());
 //   submitBtn.addEventListener("click", (e) => submitForm(e))window.addEventListener("load", () => {
 //     //On récupère le panier dans le localStorage
 //     cart = JSON.parse(localStorage.getItem('cart')) ?? [];
-//     //On affiche le nombre d'articles dans le panier
-//     displayCartLength();
-//     //On affiche le panier
-//     displayCart();
-//     //On affiche le prix total du panier
