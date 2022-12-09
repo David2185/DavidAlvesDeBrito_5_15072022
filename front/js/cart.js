@@ -309,7 +309,7 @@ function postForm() {
                 console.log(data);
                 localStorage.clear();
                 //une fois la commande validée : redirection vers la page confirmation de commande pour afficher l'id de commande
-                window.location.href = "confirmation.html?id=" + data.idProducts;
+                window.location.href = "confirmation.html?id=" + data.orderId;
             })
             .catch((error) => {
                 console.log(error);
