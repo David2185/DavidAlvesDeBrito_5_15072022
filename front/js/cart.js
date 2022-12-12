@@ -316,29 +316,25 @@ function postForm() {
             });
     });
 }
-postForm();
-
-// création et affichage d'un id pour la page confirmation de commande
-
 
 // envoi du formulaire de contact au serveur et l'alert si panier vide sur le bouton commander.
 
-function sendForm() {
-    const btn_command = document.getElementById("order");
+// function sendForm() {
+//     const btn_command = document.getElementById("order");
     
-    btn_command.addEventListener("click", () => {
-        if (produitLocalStorage.length == 0) {
-            alert("Votre panier est vide");
-        } else {
-            postForm();
-        }
-    })
+//     btn_command.addEventListener("click", () => {
+//         if (produitLocalStorage.length == 0) {
+//             alert("Votre panier est vide");
+//         } else {
+//             postForm();
+//         }
+//     })
     
 
-}
+// }
 
 
-sendForm();
+// sendForm();
 
 
 
