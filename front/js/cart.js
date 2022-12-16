@@ -273,12 +273,13 @@ function postForm() {
         let inputCity = document.getElementById('city');
         let inputMail = document.getElementById('email');
 
-        //Construction d'un array depuis le local storage
+        // Construction d'un array depuis le local storage
+
         let idProducts = [];
         for (let i = 0; i < produitLocalStorage.length; i++) {
             idProducts.push(produitLocalStorage[i].idProducts);
-            for (let j = 0; j < totalQuantity.length; j++) {
-                idProducts.push(produitLocalStorage[i].totalQuantity);
+            for (let j = 0; j < item.quantity; j++) {
+                idProducts.push(produitLocalStorage[i].quantity);
             };
             console.log(idProducts);
         }
@@ -316,6 +317,32 @@ function postForm() {
             });
     });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // envoi du formulaire de contact au serveur et l'alert si panier vide sur le bouton commander.
 
