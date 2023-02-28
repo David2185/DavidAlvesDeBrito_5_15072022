@@ -179,7 +179,7 @@ const validEmail = function (inputEmail) {
         emailErrorMsg.innerHTML = '';
     } else {
         emailErrorMsg.innerHTML = 'Veuillez renseigner votre email.';
-    } 
+    }
 };
 
 
@@ -254,7 +254,7 @@ function checkForm() {
 
 
 checkForm();
-   
+
 
 //Envoi des informations client au localstorage et création d'un order id qui s'affichera dans la page confirmation de commande
 
@@ -277,9 +277,8 @@ function postForm() {
 
         let idProducts = [];
         for (let i = 0; i < produitLocalStorage.length; i++) {
-            idProducts.push(produitLocalStorage[i].idProducts);
-            for (let j = 0; j < item.quantity; j++) {
-                idProducts.push(produitLocalStorage[i].quantity);
+            for (let j = 0; j < produitLocalStorage[i].quantity; j++) {
+                idProducts.push(produitLocalStorage[i].id);
             };
             console.log(idProducts);
         }
@@ -310,6 +309,7 @@ function postForm() {
                 console.log(data);
                 localStorage.clear();
                 //une fois la commande validée : redirection vers la page confirmation de commande pour afficher l'id de commande
+                document.getElementById('orderId');
                 window.location.href = "confirmation.html?id=" + data.orderId;
             })
             .catch((error) => {
@@ -319,64 +319,62 @@ function postForm() {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // envoi du formulaire de contact au serveur et l'alert si panier vide sur le bouton commander.
 
-// function sendForm() {
-//     const btn_command = document.getElementById("order");
-    
-//     btn_command.addEventListener("click", () => {
-//         if (produitLocalStorage.length == 0) {
-//             alert("Votre panier est vide");
-//         } else {
-//             postForm();
-//         }
-//     })
-    
-
-// }
+function sendForm() {
+    const btn_command = document.getElementById("order");
+    produitLocalStorage = JSON.parse(localStorage.getItem('cart')) ?? [];
 
 
-// sendForm();
+    btn_command.addEventListener("click", () => {
+        if (produitLocalStorage.length == 0) {
+            alert("Votre panier est vide");
+        } else {
+            postForm();
+        }
+    })
+
+
+}
+
+
+sendForm();
 
 
 
-// function submitForm (e){
-//     e.preventDefault();
-//     if (cart.length === 0){
-//       alert('Vous ne pouvez passer une commande avec un panier vide')
-//     }else{
-//       if(checkInput()){
-//         postApi(requestBody())
-//       };
-//     }
-//   };
-//   //Lorsque l'utilisateur clique sur le bouton commander, on appelle la fonction submitForm
-//   const submitBtn = document.getElementById('order')
-//   submitBtn.addEventListener("click", (e) => submitForm(e))window.addEventListener("load", () => {
-//     //On récupère le panier dans le localStorage
-//     cart = JSON.parse(localStorage.getItem('cart')) ?? [];
+function submitForm(e) {
+    e.preventDefault();
+    if (cart.length === 0) {
+        alert('Vous ne pouvez passer une commande avec un panier vide')
+    } else {
+        if (checkInput()) {
+            postApi(requestBody())
+        };
+    }
+};
+//Lorsque l'utilisateur clique sur le bouton commander, on appelle la fonction submitForm et on affiche l'id de commande dans la page confirmation de commande
+
+form.addEventListener('submit', submitForm);
+
+//Affichage de l'id de commande dans la page confirmation de commande
+
+function displayOrderId() {
+    let url = new URL(window.location.href);
+    let id = url.searchParams.get("id");
+    document.getElementById("orderId").innerHTML = id;
+}
+
+
+//Affichage du prix total de la commande dans la page confirmation de commande
+
+function displayTotalPrice() {
+    let url = new URL(window.location.href);
+    let price = url.searchParams.get("price");
+    document.getElementById("totalPrice").innerHTML = price;
+}
+
+displayTotalPrice();
+
+
+
+        
