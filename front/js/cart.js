@@ -107,10 +107,6 @@ async function init() {
     }
 }
 
-init();
-
-
-
 //gestion du formulaire
 
 let form = document.querySelector(".cart__order__form");
@@ -309,7 +305,7 @@ function postForm() {
                 console.log(data);
                 localStorage.clear();
                 //une fois la commande validée : redirection vers la page confirmation de commande pour afficher l'id de commande
-                window.location.href = "confirmation.html?id=" + data.orderId;
+                window.location.href = "confirmation.html?id=" + id;
             })
             .catch((error) => {
                 console.log(error);
@@ -326,7 +322,7 @@ function sendForm() {
 
 
     btn_command.addEventListener("click", () => {
-        if (produitLocalStorage.length == 0) {
+        if (produitLocalStorage.length === 0) {
             alert("Votre panier est vide");
         } else {
             postForm();
@@ -342,6 +338,20 @@ sendForm();
 
 
 function submitForm(e) {
+    let cart = new Cart();
+    //définition de la fonction checkInput qui vérifie si le formulaire est rempli correctement
+
+    function checkInput() {
+        let input = document.getElementsByTagName('input');
+        let inputArray = Array.from(input);
+        let inputValid = true;
+        inputArray.forEach(function (input) {
+            if (input.value === '') {
+                inputValid = false;
+            }
+        });
+        return inputValid;
+    };
     e.preventDefault();
     if (cart.length === 0) {
         alert('Vous ne pouvez passer une commande avec un panier vide')
@@ -377,3 +387,7 @@ displayTotalPrice();
 
 
         
+
+init();
+
+
