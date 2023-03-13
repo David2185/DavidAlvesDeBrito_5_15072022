@@ -352,12 +352,16 @@ function submitForm(e) {
         });
         return inputValid;
     };
+
+
     e.preventDefault();
+
+    
     if (cart.length === 0) {
         alert('Vous ne pouvez passer une commande avec un panier vide')
     } else {
         if (checkInput()) {
-            postApi(requestBody())
+            postForm(submitForm())
         };
     }
 };
