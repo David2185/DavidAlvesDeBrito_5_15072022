@@ -348,20 +348,22 @@ function submitForm(e) {
         inputArray.forEach(function (input) {
             if (input.value === '') {
                 inputValid = false;
+            } else {
+                e.preventDefault;
             }
         });
         return inputValid;
     };
 
 
-    e.preventDefault;
+    
 
 
     if (cart.length === 0) {
         alert('Vous ne pouvez passer une commande avec un panier vide')
     } else {
         if (checkInput()) {
-            postForm(submitForm(displayOrderId, displayTotalPrice));
+            postForm(submitForm());
         };
     }
 };
