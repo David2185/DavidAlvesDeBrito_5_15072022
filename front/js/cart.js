@@ -354,17 +354,19 @@ function submitForm(e) {
     };
 
 
-    e.preventDefault();
+    e.preventDefault;
 
-    
+
     if (cart.length === 0) {
         alert('Vous ne pouvez passer une commande avec un panier vide')
     } else {
         if (checkInput()) {
-            postForm(submitForm())
+            postForm(submitForm(displayOrderId, displayTotalPrice));
         };
     }
 };
+
+
 //Lorsque l'utilisateur clique sur le bouton commander, on appelle la fonction submitForm et on affiche l'id de commande dans la page confirmation de commande
 
 form.addEventListener('submit', submitForm);
@@ -386,12 +388,5 @@ function displayTotalPrice() {
     document.getElementById("totalPrice").innerHTML = price;
 }
 
-displayTotalPrice();
-
-
-
-        
 
 init();
-
-
