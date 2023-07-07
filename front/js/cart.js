@@ -23,8 +23,7 @@ async function init() {
         //création des éléments du DOM et attribution du contenu pour chaque balise.
 
         let articleItem = document.createElement('article');
-        articleItem.textContent = cartItem.name;
-        articleItem.classList.add('cart_item');
+        articleItem.classList.add('cart__item');
         articleItem.dataset.id = cartItem.id;
         articleItem.dataset.color = cartItem.color;
 
@@ -36,12 +35,13 @@ async function init() {
         img.alt = cartItem.altTxt;
 
         let itemContent = document.createElement('div');
-        itemContent.classList.add('cart_item_content');
+        itemContent.classList.add('cart__item__content');
 
         let itemContentDescription = document.createElement('div');
-        itemContentDescription.classList.add('cart_item_content_description');
+        itemContentDescription.classList.add('cart__item__content__description');
 
         let h2 = document.createElement('h2');
+        h2.textContent= cartItem.name;
 
         let paraColor = document.createElement('p');
         paraColor.textContent = cartItem.color;
@@ -85,6 +85,9 @@ async function init() {
         })
 
         // mise en place des balises crées dans le DOM.
+        articleItem.appendChild(cartImg);
+        cartImg.appendChild(img);
+        articleItem.appendChild(itemContent);
 
         itemDelete.appendChild(deletePara);
         itemSettingsQuantity.appendChild(paraQuantity);
@@ -96,9 +99,9 @@ async function init() {
         itemContentDescription.appendChild(secondpara);
         itemContent.appendChild(itemContentDescription);
         itemContent.appendChild(contentSettings);
-        cartImg.appendChild(img);
-        articleItem.appendChild(cartImg);
-        articleItem.appendChild(itemContent);
+        
+       
+        
 
 
 
