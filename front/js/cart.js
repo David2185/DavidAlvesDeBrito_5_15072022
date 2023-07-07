@@ -124,9 +124,11 @@ const validFirstName = function (inputFirstName) {
 
     if (charRegExp.test(inputFirstName.value)) {
         firstNameErrorMsg.innerHTML = '';
-
+        return true;
     } else {
+        
         firstNameErrorMsg.innerHTML = 'Vous devez renseigner un prénom valide';
+        return false;
     }
 };
 
@@ -137,20 +139,25 @@ const validLastName = function (inputLastName) {
 
     if (charRegExp.test(inputLastName.value)) {
         lastNameErrorMsg.innerHTML = '';
+        return true;
     } else {
         lastNameErrorMsg.innerHTML = 'Vous devez renseigner un nom valide';
+        return false
     }
 };
 
 //validation de l'adresse
 
 const validAddress = function (inputAddress) {
+
     let addressErrorMsg = inputAddress.nextElementSibling;
 
     if (addressRegExp.test(inputAddress.value)) {
         addressErrorMsg.innerHTML = '';
+        return true;
     } else {
-        addressErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+        addressErrorMsg.innerHTML = 'Veuillez renseigner une adresse.';
+        return false;
     }
 };
 
@@ -161,8 +168,10 @@ const validCity = function (inputCity) {
 
     if (charRegExp.test(inputCity.value)) {
         cityErrorMsg.innerHTML = '';
+        return true;
     } else {
         cityErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+        return false;
     }
 };
 
@@ -173,8 +182,10 @@ const validEmail = function (inputEmail) {
 
     if (emailRegExp.test(inputEmail.value)) {
         emailErrorMsg.innerHTML = '';
+        return true;
     } else {
         emailErrorMsg.innerHTML = 'Veuillez renseigner votre email.';
+        return false;
     }
 };
 
@@ -183,27 +194,29 @@ const validEmail = function (inputEmail) {
 
 function fieldManager() {
 
-
-    form.firstName.addEventListener('change', function () {
+    console.log(form.firstName)
+    console.log(form.address);
+    form.firstName.addEventListener('input', function () {
         validFirstName(this);
     });
 
-    form.lastName.addEventListener('change', function () {
+    form.lastName.addEventListener('input', function () {
         validLastName(this);
+        
     });
 
 
-    form.address.addEventListener('change', function () {
+    form.address.addEventListener('input', function () {
         validAddress(this);
     });
 
 
-    form.city.addEventListener('change', function () {
+    form.city.addEventListener('input', function () {
         validCity(this);
     });
 
 
-    form.email.addEventListener('change', function () {
+    form.email.addEventListener('input', function () {
         validEmail(this);
     });
 }
@@ -212,56 +225,24 @@ fieldManager();
 //si l'un des champ est vide afficher 'Veuillez remplir ce champ'
 
 function checkForm() {
-    let formValid = true;
-
-    if (form.firstName.value == '') {
-        formValid = false;
-        let firstNameErrorMsg = form.firstName.nextElementSibling;
-        firstNameErrorMsg.innerHTML = 'Veuillez remplir ce champ.';
-    }
-
-    if (form.lastName.value == '') {
-        formValid = false;
-        let lastNameErrorMsg = form.lastName.nextElementSibling;
-        lastNameErrorMsg.innerHTML = 'Veuillez remplir ce champ.';
-    }
-
-    if (form.address.value == '') {
-        formValid = false;
-        let addressErrorMsg = form.address.nextElementSibling;
-        addressErrorMsg.innerHTML = 'Veuillez remplir ce champ.';
-    }
-
-    if (form.city.value == '') {
-        formValid = false;
-        let cityErrorMsg = form.city.nextElementSibling;
-        cityErrorMsg.innerHTML = 'Veuillez remplir ce champ.';
-    }
-
-    if (form.email.value == '') {
-        formValid = false;
-        let emailErrorMsg = form.email.nextElementSibling;
-        emailErrorMsg.innerHTML = 'Veuillez remplir ce champ.';
-    }
-
-    return formValid;
+    return validFirstName(form.firstName) && validLastName(form.lastName) && validAddress(form.address) && validCity(form.city) && validEmail(form.email);
 }
 
 
 
-checkForm();
-
 
 //Envoi des informations client au localstorage et création d'un order id qui s'affichera dans la page confirmation de commande
 
-function postForm() {
-    const btn_command = document.getElementById("order");
 
-    //Evenenements de type listener sur le panier
-    btn_command.addEventListener("click", () => {
+function submitForm(e) {
 
-        produitLocalStorage = JSON.parse(localStorage.getItem('cart')) ?? [];
+    e.preventDefault();
 
+    let cart = new Cart();
+
+    if (cart.items.length === 0) {
+        alert('Vous ne pouvez passer une commande avec un panier vide')
+    } else if (checkForm()) {
         //Récupération des coordonnées du formulaire client
         let inputName = document.getElementById('firstName');
         let inputLastName = document.getElementById('lastName');
@@ -272,11 +253,10 @@ function postForm() {
         // Construction d'un array depuis le local storage
 
         let idProducts = [];
-        for (let i = 0; i < produitLocalStorage.length; i++) {
-            for (let j = 0; j < produitLocalStorage[i].quantity; j++) {
-                idProducts.push(produitLocalStorage[i].id);
+        for (let i = 0; i < cart.items.length; i++) {
+            for (let j = 0; j < cart.items[i].quantity; j++) {
+                idProducts.push(cart.items[i].id);
             };
-            console.log(idProducts);
         }
 
         const order = {
@@ -305,62 +285,12 @@ function postForm() {
                 console.log(data);
                 localStorage.clear();
                 //une fois la commande validée : redirection vers la page confirmation de commande pour afficher l'id de commande
-                window.location.href = "confirmation.html?id=" + id;
+                window.location.href = "confirmation.html?id=" + data.orderId;
+
             })
             .catch((error) => {
                 console.log(error);
             });
-    });
-}
-
-
-// envoi du formulaire de contact au serveur et l'alert si panier vide sur le bouton commander.
-
-function sendForm() {
-    const btn_command = document.getElementById("order");
-    produitLocalStorage = JSON.parse(localStorage.getItem('cart')) ?? [];
-
-
-    btn_command.addEventListener("click", () => {
-        if (produitLocalStorage.length === 0) {
-            alert("Votre panier est vide");
-        } else {
-            postForm(displayOrderId, displayTotalPrice);
-        }
-    })
-
-
-}
-
-
-sendForm();
-
-
-
-function submitForm(e) {
-    let cart = new Cart();
-    //définition de la fonction checkInput qui vérifie si le formulaire est rempli correctement
-
-    function checkInput() {
-        let input = document.getElementsByTagName('input');
-        let inputArray = Array.from(input);
-        let inputValid = true;
-        inputArray.forEach(function (input) {
-            if (input.value === '') {
-                inputValid = false;
-            }
-        });
-        return inputValid;
-    };
-
-    e.preventDefault();
-
-    if (cart.length === 0) {
-        alert('Vous ne pouvez passer une commande avec un panier vide')
-    } else {
-        if (checkInput()) {
-            postForm(submitForm());
-        };
     }
 };
 
@@ -369,7 +299,6 @@ function submitForm(e) {
 
 form.addEventListener('submit', submitForm);
 
-//Affichage de l'id de commande dans la page confirmation de commande
 
 function displayOrderId() {
     let url = new URL(window.location.href);
