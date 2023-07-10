@@ -46,11 +46,8 @@ async function init() {
 // gestion du panier
 
 let quantityPicked = document.querySelector("#quantity");
-
 let colorPicked = document.querySelector("#colors");
 let idProduct = (new URL(window.location).searchParams.get("id"));
-
-
 
 
 function addToCart() {
@@ -58,17 +55,17 @@ function addToCart() {
     //fonction qui ajoute un article dans un panier via le localStorage en tenant compte de l'id, de la couleur et de la quantité choisie
     let btnSendToCart = document.getElementById('addToCart');
     btnSendToCart.addEventListener('click', function () {
-            
-            let cart = new Cart();
-            cart.add(idProduct, colorPicked.value, + quantityPicked.value);
-            if (quantityPicked.value == 0 || quantityPicked.value >100){
-                alert("veillez séléctionner une quantité valide")
-            }
-        });
+        let cart = new Cart();
+        if (quantityPicked.value == 0 || quantityPicked.value > 100) {
+            alert("veillez séléctionner une quantité valide")
+        } else {
+            cart.add(idProduct, colorPicked.value, +quantityPicked.value);
+
+        }
+       
+    });
 }
 
 
 
 init();
-
-
