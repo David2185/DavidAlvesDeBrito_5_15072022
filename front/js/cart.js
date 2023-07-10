@@ -197,8 +197,7 @@ const validEmail = function (inputEmail) {
 
 function fieldManager() {
 
-    console.log(form.firstName)
-    console.log(form.address);
+
     form.firstName.addEventListener('input', function () {
         validFirstName(this);
     });

@@ -3,6 +3,7 @@
 async function getArticles() {
     let articlesCatch = await fetch("http://localhost:3000/api/products")
     let articles = await articlesCatch.json();
+    
 
     return articles;
 

@@ -17,7 +17,6 @@ async function init() {
 
     // création des éléments du DOM nécessaires
     let id = params.get("id");
-    // console.log(id);
     let article = await getArticle(id);
     console.log(article);
     let title = document.getElementById('title');
@@ -47,6 +46,7 @@ async function init() {
 // gestion du panier
 
 let quantityPicked = document.querySelector("#quantity");
+
 let colorPicked = document.querySelector("#colors");
 let idProduct = (new URL(window.location).searchParams.get("id"));
 
@@ -61,6 +61,9 @@ function addToCart() {
             
             let cart = new Cart();
             cart.add(idProduct, colorPicked.value, + quantityPicked.value);
+            if (quantityPicked.value == 0 || quantityPicked.value >100){
+                alert("veillez séléctionner une quantité valide")
+            }
         });
 }
 
